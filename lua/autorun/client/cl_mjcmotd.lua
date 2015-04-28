@@ -89,7 +89,7 @@ function MjcMOTD()
 			  MjcMOTDPanel_LeftFrame:SetSize(300, ScrH()-50)
 			  MjcMOTDPanel_LeftFrame:Dock(LEFT)
 			  MjcMOTDPanel_LeftFrame.Paint = function( self, w, h )
-    		 	draw.RoundedBox( 0, 0, 0, w, h, Color(52, 73, 94) )
+    		 	draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_LeftFramColour )
   			end
 
 
@@ -97,7 +97,7 @@ function MjcMOTD()
 			  MjcMOTDPanel_LeftTopFrame:SetSize(300, 84)
 			  MjcMOTDPanel_LeftTopFrame:Dock(TOP)
 			  MjcMOTDPanel_LeftTopFrame.Paint = function( self, w, h )
-    		 	draw.RoundedBox( 0, 0, 0, w, h, Color(52, 73, 94) )
+    		 	draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_LeftFrameTopColour )
   			end
   //Avatar
   local MjcMOTDPanel_LeftTopFrame_Avatar = vgui.Create("AvatarImage", MjcMOTDPanel_LeftTopFrame)
@@ -117,7 +117,7 @@ function MjcMOTD()
         MjcMOTDPanel_LeftFrameST:SetSize(250, MjcMOTDPanel_LeftFrame:GetTall()/30)
         MjcMOTDPanel_LeftFrameST:Dock(TOP)
         MjcMOTDPanel_LeftFrameST.Paint = function( self, w, h )
-          draw.RoundedBox( 0, 0, 0, w, h, Color(44, 62, 80) )
+          draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_LeftFrameSTColour )
         end
   //Server Info Title
   local MjcMOTDPanel_LeftFrameSTT = vgui.Create("DLabel", MjcMOTDPanel_LeftFrameST)
@@ -144,24 +144,24 @@ function MjcMOTD()
   local MjcMOTDPanel_LeftFrameButtons = vgui.Create("DScrollPanel", MjcMOTDPanel_LeftFrame)
         MjcMOTDPanel_LeftFrameButtons:Dock(FILL)
         MjcMOTDPanel_LeftFrameButtons.Paint = function( self, w, h )
-          draw.RoundedBox( 0, 0, 0, w, h, Color(44, 62, 80) )
+          draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_LeftFrameButtonsColour )
         end
   local sbar = MjcMOTDPanel_LeftFrameButtons:GetVBar()
 function sbar:Paint( w, h )
-  draw.RoundedBox( 0, 0, 0, w, h, Color(189, 195, 199) )
+  draw.RoundedBox( 0, 0, 0, w, h, MjcmOTDPanel_ScrollbarBackground )
 end
 function sbar.btnUp:Paint( w, h )
-  draw.RoundedBox( 0, 0, 0, w, h, Color(127, 140, 141) )
+  draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_ScrollbarbtnUp )
 end
 function sbar.btnDown:Paint( w, h )
-  draw.RoundedBox( 0, 0, 0, w, h, Color(127, 140, 141) )
+  draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_ScrollbarbtnDown )
 end
 function sbar.btnGrip:Paint( w, h )
-  draw.RoundedBox( 0, 0, 0, w, h, Color(149, 165, 166) )
+  draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_ScrollbarGrip )
 end
 local MjcMOTDPanel_HTMLDefault = vgui.Create("HTML", MjcMOTDPanel_Mainframe)
           MjcMOTDPanel_HTMLDefault:Dock(FILL)
-          MjcMOTDPanel_HTMLDefault:OpenURL("http://www.google.com/")
+          MjcMOTDPanel_HTMLDefault:OpenURL(MjcMOTDPanel_DefaultURL)
  
  for k, v in pairs(MMOTDButtonTable) do
   local MjcMOTDPanel_MainButton = vgui.Create("DButton", MjcMOTDPanel_LeftFrameButtons)
@@ -174,6 +174,18 @@ local MjcMOTDPanel_HTMLDefault = vgui.Create("HTML", MjcMOTDPanel_Mainframe)
           MjcMOTDPanel_MainButton.Paint = function( self, w, h )
           draw.RoundedBox(0, 0, 0, w, h, v.buttoncolor)
         end
+        if MjcMOTDPanel_HoverMainButtons then
+          function MjcMOTDPanel_MainButton:OnCursorEntered()
+            MjcMOTDPanel_MainButton.Paint = function(self, w, h)
+            draw.RoundedBox(0,0,0,w,h,v.buttoncolorhover)
+          end
+        end
+          function MjcMOTDPanel_MainButton:OnCursorExited()
+            MjcMOTDPanel_MainButton.Paint = function(self, w, h)
+            draw.RoundedBox(0,0,0,w,h,v.buttoncolor)
+          end
+        end
+      end
           MjcMOTDPanel_MainButton.DoClick = function()
             if type(v.func) == "string" then     
               MjcMOTDPanel_HTMLDefault:OpenURL(v.func)
@@ -183,23 +195,36 @@ local MjcMOTDPanel_HTMLDefault = vgui.Create("HTML", MjcMOTDPanel_Mainframe)
       end
  end
 local MjcMOTDPanel_CloseButton = vgui.Create("DButton", MjcMOTDPanel_Mainframe)
-  			MjcMOTDPanel_CloseButton:Dock(RIGHT)
+  		MjcMOTDPanel_CloseButton:Dock(RIGHT)
 			MjcMOTDPanel_CloseButton:SetSize(80, 100)
 			MjcMOTDPanel_CloseButton:SetText("X")
 			MjcMOTDPanel_CloseButton:SetTextColor(color_white)
 			MjcMOTDPanel_CloseButton:SetFont("MjcMOTD_Font_CloseButton")
 			MjcMOTDPanel_CloseButton.DoClick = function() MjcMOTD_CloseMenu() end
 			MjcMOTDPanel_CloseButton.Paint = function( self, w, h )
-    			draw.RoundedBox( 0, 0, 0, w, h, Color(36,36,36) )
+    			draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_CloseButtonColour )
   			end
+      if MjcMOTDPanel_CloseHoverButton then
+      function MjcMOTDPanel_CloseButton:OnCursorEntered()
+          MjcMOTDPanel_CloseButton.Paint = function( self, w, h )
+          draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_CloseButtonHoverColour )
+        end
+      end
+      function MjcMOTDPanel_CloseButton:OnCursorExited()
+          MjcMOTDPanel_CloseButton.Paint = function( self, w, h )
+          draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_CloseButtonColour )
+        end
+      end
+    end
   	 local MjcMOTDPanel_TopBar = vgui.Create("DPanel", MjcMOTDPanel_Mainframe)
 			  MjcMOTDPanel_TopBar:Dock(TOP)
 			  MjcMOTDPanel_TopBar:SetSize(ScrW()-50, 40)
 			  MjcMOTDPanel_TopBar.Paint = function( self, w, h )
-    		 	draw.RoundedBox( 0, 0, 0, w, h, Color(44, 62, 80) )
+    		 	draw.RoundedBox( 0, 0, 0, w, h, MjcMOTDPanel_TopBarBackgroundColour )
   			end
   	local MjcMOTDText_ServerName = vgui.Create("DLabel", MjcMOTDPanel_TopBar)
-  			MjcMOTDText_ServerName:SetText("Welcome to "..GetHostName())
+  			MjcMOTDText_ServerName:SetText(MjcMOTDPanel_ServerNameText)
+        MjcMOTDText_ServerName:SetColor(MjcMOTDPanel_ServerNameTextColour)
   			MjcMOTDText_ServerName:Dock(LEFT)
   			MjcMOTDText_ServerName:DockMargin(10,0,0,0)
   			MjcMOTDText_ServerName:SetSize(ScrW()-60,40)
@@ -219,9 +244,15 @@ end
 hook.Add("InitPostEntity", "MjcMotd_OOS", MjcMOTD_InitialSpawn) 
 
 function MjcMotd_OpenChatCommand( ply, text )
-  if text == "!motd"  then
+  if text == MjcMOTD_MotdChatCommand then
     MjcMOTD()
     gui.EnableScreenClicker(true)
+  else 
   end
 end
 hook.Add("OnPlayerChat", "MjcMotd_OCC", MjcMotd_OpenChatCommand)
+
+concommand.Add( "MjcMOTD_ConOpenMenu", function( ply )
+	  MjcMOTD()
+      gui.EnableScreenClicker(true)
+end )
