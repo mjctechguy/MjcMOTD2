@@ -1,5 +1,6 @@
 //Left Frame Colours
 MjcMOTDPanel_LeftFramColour = Color(52, 73, 94) -- Left Frame Colour
+MjcMOTDPanel_LeftFrameTopColour =  Color(52, 73, 94) -- Left Top Frame Colour where the Avatar and your Username is
 MjcMOTDPanel_LeftFrameSTColour = Color(44, 62, 80) -- This is the background colour behind the Server Info
 MjcMOTDPanel_LeftFrameButtonsColour = Color(44, 62, 80) -- This is the background of where buttons are located
 // Close Button Settings & Colours
@@ -11,6 +12,7 @@ MjcMOTDPanel_ServerNameText = "Welcome to "..GetHostName()
 MjcMOTDPanel_TopBarBackgroundColour = Color(44, 62, 80)
 MjcMOTDPanel_ServerNameTextColour = Color(255,255,255)
 
+//Scrollbar Colours -- The scroll bar will appear when you have a lot of button. But sometimes smaller screens will see a scrollbar so yea
 MjcMOTDPanel_ScrollbarbtnUp = Color(127, 140, 141) 
 MjcMOTDPanel_ScrollbarbtnDown = Color(127, 140, 141)
 MjcMOTDPanel_ScrollbarGrip = Color(149, 165, 166) -- THis is what you hold on to when you drag down or up
