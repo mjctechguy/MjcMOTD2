@@ -244,15 +244,18 @@ end
 hook.Add("InitPostEntity", "MjcMotd_OOS", MjcMOTD_InitialSpawn) 
 
 function MjcMotd_OpenChatCommand( ply, text )
+  if ply == LocalPlayer() then
   if text == MjcMOTD_MotdChatCommand then
     MjcMOTD()
     gui.EnableScreenClicker(true)
-  else 
+  else
+    return false
+    end
   end
 end
 hook.Add("OnPlayerChat", "MjcMotd_OCC", MjcMotd_OpenChatCommand)
 
 concommand.Add( "MjcMOTD_ConOpenMenu", function( ply )
-	  MjcMOTD()
+	    MjcMOTD()
       gui.EnableScreenClicker(true)
 end )
